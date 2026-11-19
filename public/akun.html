@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f1f2ec">
+  <meta name="description" content="Masuk atau buat akun Nusa Digital Studio.">
+  <title>Masuk / Daftar — Nusa Digital Studio</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/akun.css">
+  <script src="/akun.js" defer></script>
+</head>
+<body>
+  <header class="account-header">
+    <a class="account-brand" href="/" aria-label="Kembali ke Nusa Digital Studio">
+      <span class="brand-mark">n.</span><span>NUSA<span>/DIGITAL</span></span>
+    </a>
+    <a class="back-link" href="/">← Kembali ke website</a>
+  </header>
+
+  <main class="account-layout">
+    <section class="account-story">
+      <div class="story-orbit orbit-one"></div><div class="story-orbit orbit-two"></div>
+      <p class="mono story-kicker"><span></span> RUANG KLIEN NUSA</p>
+      <div class="story-copy">
+        <p class="mono">IDE BAIK BERTUMBUH BERSAMA</p>
+        <h1>Semua langkah<br>dimulai dari<br><em>satu cerita.</em></h1>
+        <p>Buat akun untuk terhubung dengan Nusa Digital Studio. Akun ini adalah fitur demonstrasi untuk proyek workshop.</p>
+      </div>
+      <div class="story-bottom"><span class="mono">NUSA DIGITAL STUDIO</span><span class="story-symbol">✳</span></div>
+    </section>
+
+    <section class="account-panel">
+      <div class="auth-view" id="auth-view">
+        <div class="auth-intro">
+          <p class="mono auth-kicker" id="form-kicker">SELAMAT DATANG KEMBALI</p>
+          <h2 id="form-heading">Masuk ke akunmu.</h2>
+          <p id="form-description">Lanjutkan percakapan dan jelajahi langkah berikutnya.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Pilih masuk atau daftar">
+          <button class="auth-tab is-active" id="tab-login" type="button" role="tab" aria-selected="true">Masuk</button>
+          <button class="auth-tab" id="tab-register" type="button" role="tab" aria-selected="false">Buat akun</button>
+        </div>
+
+        <form class="auth-form" id="login-form">
+          <label for="login-email">Email</label>
+          <input id="login-email" name="email" type="email" autocomplete="email" maxlength="150" placeholder="nama@email.com" required>
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+          <p class="auth-status" id="login-status" aria-live="polite"></p>
+          <button class="account-button" type="submit">Masuk <span aria-hidden="true">→</span></button>
+          <p class="auth-switch-copy">Belum punya akun? <button type="button" data-switch="register">Daftar di sini</button></p>
+        </form>
+
+        <form class="auth-form" id="register-form" hidden>
+          <label for="register-name">Nama lengkap</label>
+          <input id="register-name" name="nama" type="text" autocomplete="name" minlength="2" maxlength="100" placeholder="Nama kamu" required>
+          <label for="register-email">Email</label>
+          <input id="register-email" name="email" type="email" autocomplete="email" maxlength="150" placeholder="nama@email.com" required>
+          <label for="register-password">Buat password <span class="label-note">minimal 8 karakter</span></label>
+          <input id="register-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="100" required>
+          <label for="register-confirm">Ulangi password</label>
+          <input id="register-confirm" name="konfirmasi" type="password" autocomplete="new-password" minlength="8" maxlength="100" required>
+          <p class="auth-status" id="register-status" aria-live="polite"></p>
+          <button class="account-button" type="submit">Daftar & masuk <span aria-hidden="true">→</span></button>
+          <p class="auth-switch-copy">Sudah punya akun? <button type="button" data-switch="login">Masuk</button></p>
+        </form>
+
+        <p class="account-disclaimer">Akun ini untuk demonstrasi tugas. Jangan gunakan password pribadi.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="account-footer">
+    <span>© <span id="year"></span> Nusa Digital Studio</span>
+    <span>Profil dan akun simulasi untuk proyek workshop.</span>
+  </footer>
+</body>
+</html>

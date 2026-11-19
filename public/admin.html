@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172720">
+  <title>Admin — Nusa Digital Studio</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin.css">
+  <script src="/admin.js" defer></script>
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <aside class="admin-rail">
+      <a class="admin-brand" href="/" aria-label="Kembali ke website"><span class="admin-brand-mark">n.</span><span>NUSA<span>/DIGITAL</span></span></a>
+      <div class="rail-label mono">WORKSPACE</div>
+      <a class="rail-link is-active" href="#layanan-admin"><span>↗</span> Layanan</a>
+      <a class="rail-link" href="#pesan-admin"><span>✉</span> Pesan masuk</a>
+      <div class="rail-bottom"><span class="rail-dot"></span><span>ADMIN MODE</span></div>
+    </aside>
+
+    <section class="admin-main">
+      <header class="admin-topbar">
+        <div><p class="mono admin-breadcrumb">NUSA DIGITAL <span>/</span> ADMIN</p><h1>Ruang kerja</h1></div>
+        <div class="topbar-actions"><a class="view-site" href="/">Lihat website <span aria-hidden="true">↗</span></a><button class="logout-button" id="logout-button" type="button" hidden>Keluar</button></div>
+      </header>
+
+      <section class="login-gate" id="login-gate">
+        <div class="login-aside"><span class="login-icon">n.</span><p class="mono">AREA TERBATAS</p><h2>Selamat datang<br>kembali.</h2><p>Masuk untuk mengelola layanan dan membaca pesan pengunjung.</p></div>
+        <form id="login-form" class="login-form">
+          <p class="mono form-kicker">ADMIN ACCESS / NDS</p><h2>Masuk ke admin</h2>
+          <label for="username">Username</label><input id="username" name="username" autocomplete="username" required>
+          <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required>
+          <p class="admin-status" id="login-status" aria-live="polite"></p>
+          <button class="admin-button" type="submit">Masuk <span aria-hidden="true">→</span></button>
+          <p class="login-hint">Kredensial demo dapat dilihat di file <code>.env</code>.</p>
+        </form>
+      </section>
+
+      <section class="admin-dashboard" id="admin-dashboard" hidden>
+        <div class="welcome-row">
+          <div><p class="mono form-kicker">DASHBOARD / OVERVIEW</p><h2>Kelola konten studio.</h2><p>Perubahan layanan langsung tampil pada halaman utama.</p></div>
+          <div class="dashboard-date"><span class="mono">HARI INI</span><b id="today-date">—</b></div>
+        </div>
+        <div class="stats-row">
+          <article class="stat-card"><span class="mono">LAYANAN AKTIF</span><b id="service-count">0</b><small>Tampil di website</small></article>
+          <article class="stat-card"><span class="mono">PESAN MASUK</span><b id="message-count">0</b><small>Disimpan di database</small></article>
+          <article class="stat-card stat-card-dark"><span class="mono">STATUS DATABASE</span><b id="db-status">Memeriksa…</b><small>MySQL · data permanen</small></article>
+        </div>
+
+        <section class="admin-panel" id="layanan-admin">
+          <div class="panel-heading"><div><p class="mono form-kicker">KONTEN WEBSITE / 01</p><h2>Daftar layanan</h2></div><span class="panel-count" id="service-label-count">0 item</span></div>
+          <div class="service-admin-layout">
+            <form id="service-form" class="service-form">
+              <div class="form-title-row"><h3 id="service-form-title">Tambah layanan</h3><button class="cancel-edit" id="cancel-edit" type="button" hidden>Batal</button></div>
+              <label for="service-name">Nama layanan</label><input id="service-name" name="nama" minlength="3" maxlength="100" required placeholder="Contoh: Website untuk Bisnis">
+              <label for="service-category">Kategori</label><input id="service-category" name="kategori" minlength="2" maxlength="60" required placeholder="Contoh: Digital">
+              <label for="service-description">Deskripsi singkat</label><textarea id="service-description" name="deskripsi" minlength="20" maxlength="500" rows="4" required placeholder="Jelaskan layanan secara ringkas…"></textarea>
+              <p class="admin-status" id="service-status" aria-live="polite"></p>
+              <button class="admin-button" type="submit" id="service-submit">Simpan layanan <span aria-hidden="true">→</span></button>
+            </form>
+            <div class="service-list" id="service-list" aria-live="polite"><p class="empty-state">Memuat data layanan…</p></div>
+          </div>
+        </section>
+
+        <section class="admin-panel messages-panel" id="pesan-admin">
+          <div class="panel-heading"><div><p class="mono form-kicker">INBOX / 02</p><h2>Pesan pengunjung</h2></div><button class="refresh-button" id="refresh-messages" type="button">Muat ulang ↻</button></div>
+          <div class="message-list" id="message-list" aria-live="polite"><p class="empty-state">Memuat pesan…</p></div>
+        </section>
+        <footer class="admin-footer"><span>Profil simulasi untuk proyek workshop.</span><a href="/">← Kembali ke website</a></footer>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
