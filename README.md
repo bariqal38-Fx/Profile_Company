@@ -51,6 +51,10 @@ file .env; file itu sudah masuk .gitignore.
 - Halaman utama meminta login; pengguna tanpa sesi diarahkan ke /akun.html.
 - Setelah login atau daftar, pengguna masuk ke website; tombol Keluar mengakhiri sesi.
 - Email akun harus unik; password disimpan sebagai hash scrypt di tabel pengguna.
+- Pengguna dapat memilih layanan; permintaannya tersimpan dengan status menunggu verifikasi.
+- Pengguna melihat status permintaan sendiri; halaman memeriksa perubahan status setiap 30 detik.
+- Admin dapat memverifikasi atau menolak permintaan layanan dari dashboard.
+- Admin dapat melihat, menambah, mengubah, dan menghapus akun pengguna. Password tidak ditampilkan.
 - Pesan dapat dibaca, diberi status, dan dihapus melalui admin.
 - Data tersimpan di tabel MySQL, jadi tetap ada setelah server dimulai ulang.
 - Input diperiksa di browser dan server; query memakai placeholder tanda tanya.
@@ -67,12 +71,21 @@ file .env; file itu sudah masuk .gitignore.
 | POST | /api/layanan | Menambahkan layanan | Admin |
 | PUT | /api/layanan/:id | Mengubah layanan | Admin |
 | DELETE | /api/layanan/:id | Menghapus layanan | Admin |
+| POST | /api/permintaan-layanan | Meminta layanan | Login |
+| GET | /api/permintaan-layanan/saya | Membaca status permintaan akun sendiri | Login |
+| GET | /api/permintaan-layanan/admin | Membaca semua permintaan | Admin |
+| PATCH | /api/permintaan-layanan/admin/:id | Memverifikasi/menolak permintaan | Admin |
+| DELETE | /api/permintaan-layanan/admin/:id | Menghapus permintaan | Admin |
 | POST | /api/pesan | Menyimpan pesan kontak | Publik |
 | POST | /api/admin/login | Login admin | Publik |
 | POST | /api/admin/logout | Keluar dari sesi admin | Admin |
 | GET | /api/admin/pesan | Membaca inbox pesan | Admin |
 | PATCH | /api/admin/pesan/:id | Mengubah status pesan | Admin |
 | DELETE | /api/admin/pesan/:id | Menghapus pesan | Admin |
+| GET | /api/admin/pengguna | Membaca daftar akun tanpa password | Admin |
+| POST | /api/admin/pengguna | Membuat akun pengguna | Admin |
+| PUT | /api/admin/pengguna/:id | Mengubah nama/email dan opsional reset password | Admin |
+| DELETE | /api/admin/pengguna/:id | Menghapus akun pengguna | Admin |
 | POST | /api/auth/register | Mendaftarkan akun pengguna | Publik |
 | POST | /api/auth/login | Login pengguna | Publik |
 | GET | /api/auth/me | Membaca akun dari sesi aktif | Login |
@@ -98,6 +111,19 @@ mengirim cookie sesi HttpOnly yang ditandatangani. Halaman meminta GET /api/auth
 memeriksa sesi. Jika belum login, server mengarahkan pengunjung ke akun.html; jika login,
 pengunjung masuk ke halaman utama. Tombol Keluar memanggil endpoint logout dan menghapus cookie.
 
+**Permintaan layanan:** tombol Ajukan layanan pada kartu di `public/app.js` mengirim POST ke
+`/api/permintaan-layanan`. Middleware memastikan pengguna benar-benar login, lalu controller
+menyimpan nama layanan dan identitas pemesan ke tabel `permintaan_layanan` dengan status
+`menunggu`. Admin membuka panel Permintaan layanan dan mengganti status menjadi `diverifikasi`
+atau `ditolak`. Halaman pengguna membaca status miliknya lewat GET `/saya` setiap 30 detik;
+perubahan status muncul sebagai pesan pembaruan dan badge.
+
+**CRUD pengguna oleh admin:** `public/admin.js` memuat tabel pengguna tanpa mengambil hash
+password. Form admin mengirim POST untuk membuat, PUT untuk mengubah, dan DELETE untuk
+menghapus pengguna. `adminAuth.requireAdmin` memblokir semua endpoint ini jika cookie admin
+tidak sah. Password sementara yang dibuat atau di-reset admin tetap diproses oleh fungsi hash
+yang sama dengan pendaftaran biasa.
+
 ## Saran demo 10 menit
 
 1. **2 menit:** kenalkan perusahaan dan bagian-bagian profilnya.
@@ -114,10 +140,14 @@ pengunjung masuk ke halaman utama. Tombol Keluar memanggil endpoint logout dan m
       config/db.js              Membuat connection pool MySQL
       controllers/              Validasi dan logika database
         auth.controller.js      Daftar, login, dan profil akun pengguna
+        permintaan.controller.js Pengajuan layanan dan verifikasi status
+        admin.controller.js     CRUD layanan/pengguna serta inbox pesan
       middleware/               Login admin, sesi pengguna, dan penanganan error
         userAuth.js             Memeriksa cookie sesi pengguna
       routes/                   Pemetaan URL dan method HTTP
         auth.routes.js          Endpoint daftar, login, profil, dan logout
+        permintaan.routes.js    Pengajuan layanan, status user, dan endpoint admin
+      utils/password.js         Hash dan pemeriksaan password scrypt
     public/
       index.html                Company profile
       app.js                    fetch layanan dan submit kontak
@@ -128,7 +158,10 @@ pengunjung masuk ke halaman utama. Tombol Keluar memanggil endpoint logout dan m
       akun.js                   Interaksi login dan pendaftaran
       akun.css                  Tampilan halaman akun
     database/database.sql       Database, tabel, dan data awal
+    scripts/init-db.js          Menyiapkan tabel dari SQL saat container mulai
     Dockerfile                  Build aplikasi untuk host berbasis container
+
+Penjelasan alur file lengkap dengan bahasa sederhana ada di `PANDUAN_ALUR_KODE.md`.
 
 ## Catatan presentasi
 

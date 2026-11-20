@@ -64,7 +64,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .dashboard-date { display: flex; flex-direction: column; gap: 5px; padding: 11px 14px; border: 1px solid var(--line); background: rgba(255,255,255,.45); }
 .dashboard-date .mono { color: #879288; font-size: 8px; }
 .dashboard-date b { font-size: 10px; }
-.stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.stats-row { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; }
 .stat-card { min-height: 97px; padding: 14px 16px; border: 1px solid var(--line); background: #fafbf7; }
 .stat-card .mono, .stat-card small { display: block; }
 .stat-card .mono { color: #7d897f; font-size: 8px; }
@@ -111,21 +111,37 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .message-meta time { color: #8b948b; font: 7px var(--mono); }
 .message-meta select { max-width: 112px; border: 1px solid #e0e5dc; padding: 5px; background: #f9faf6; font-size: 8px; }
 .message-meta button { border: 0; padding: 0; color: #a24c40; background: none; font-size: 8px; text-decoration: underline; cursor: pointer; }
+.request-list, .user-list { display: flex; flex-direction: column; gap: 8px; padding-top: 15px; min-width: 0; }
+.request-admin-card, .user-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 13px; border: 1px solid #e1e5dc; background: #fff; }
+.request-admin-card h3, .user-row h3 { margin: 0; font-size: 11px; }
+.request-admin-card p, .user-row p { margin: 4px 0 0; color: #68736b; font-size: 9px; overflow-wrap: anywhere; }
+.request-admin-card time, .user-row time { display: block; margin-top: 7px; color: #8b948b; font: 7px var(--mono); }
+.request-admin-meta { display: flex; align-items: center; gap: 8px; }
+.request-admin-meta select { max-width: 145px; border: 1px solid #e0e5dc; padding: 7px; background: #f9faf6; font-size: 9px; }
+.request-admin-meta button { border: 0; color: #a24c40; background: none; font-size: 8px; text-decoration: underline; cursor: pointer; }
+.user-admin-layout { display: grid; grid-template-columns: minmax(220px,.75fr) 1.25fr; gap: 23px; padding-top: 18px; }
+.user-form { align-self: start; }
+.password-note { display: block; margin-top: 6px; color: #879188; font-size: 8px; }
+.user-row-actions { display: flex; gap: 5px; }
+.user-row-actions button { border: 1px solid #dfe4db; padding: 6px 8px; color: #536057; background: #f9faf6; font-size: 8px; cursor: pointer; }
+.user-row-actions .delete-action { color: #a24c40; }
 .admin-footer { display: flex; justify-content: space-between; gap: 16px; padding-top: 20px; color: #89938a; font: 8px var(--mono); }
 .admin-footer a { color: #617745; }
 
 @media (max-width: 900px) {
   .admin-shell { grid-template-columns: 180px minmax(0,1fr); }
   .admin-main { padding-inline: 24px; }
+  .stats-row { grid-template-columns: repeat(3,minmax(0,1fr)); }
   .service-admin-layout { grid-template-columns: 1fr; }
+  .user-admin-layout { grid-template-columns: 1fr; }
   .service-form { max-width: none; }
 }
 @media (max-width: 640px) {
   .admin-shell { display: block; }
-  .admin-rail { position: static; display: flex; flex-direction: row; align-items: center; height: auto; padding: 11px 18px; }
-  .admin-brand { margin: 0 auto 0 0; }
+  .admin-rail { position: static; display: flex; flex-direction: row; align-items: center; height: auto; padding: 11px 18px; overflow-x: auto; }
+  .admin-brand { flex: 0 0 auto; margin: 0 auto 0 0; }
   .rail-label, .rail-bottom { display: none; }
-  .rail-link { gap: 4px; padding: 8px; font-size: 9px; }
+  .rail-link { flex: 0 0 auto; gap: 4px; padding: 8px; font-size: 9px; }
   .rail-link span { width: 15px; }
   .admin-main { padding: 19px 16px 28px; }
   .admin-topbar { padding-bottom: 16px; }
@@ -145,10 +161,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .stat-card:last-child { grid-column: 1/-1; }
   .admin-panel { padding: 14px; }
   .service-admin-layout { gap: 13px; }
+  .user-admin-layout { gap: 13px; }
   .service-row { grid-template-columns: 1fr; }
   .row-actions { justify-content: flex-end; }
   .message-card { grid-template-columns: 1fr; }
   .message-meta { flex-direction: row; justify-content: space-between; align-items: center; }
   .message-meta select { max-width: 130px; }
+  .request-admin-card, .user-row { grid-template-columns: 1fr; }
+  .request-admin-meta { justify-content: space-between; }
+  .request-admin-meta select { max-width: none; }
+  .user-row-actions { justify-content: flex-end; }
   .admin-footer { font-size: 7px; }
 }

@@ -6,6 +6,7 @@ const layananRoutes = require('./routes/layanan.routes');
 const pesanRoutes = require('./routes/pesan.routes');
 const adminRoutes = require('./routes/admin.routes');
 const authRoutes = require('./routes/auth.routes');
+const permintaanRoutes = require('./routes/permintaan.routes');
 const userAuth = require('./middleware/userAuth');
 const errors = require('./middleware/errorHandler');
 
@@ -37,6 +38,7 @@ app.use('/api/layanan', layananRoutes);
 app.use('/api/pesan', pesanRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/permintaan-layanan', permintaanRoutes);
 
 app.use(express.static(publicDirectory));
 app.use(errors.notFound);

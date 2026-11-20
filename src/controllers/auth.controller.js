@@ -1,30 +1,7 @@
-const crypto = require('node:crypto');
-const { promisify } = require('node:util');
 const db = require('../config/db');
 const userAuth = require('../middleware/userAuth');
-
-const scrypt = promisify(crypto.scrypt);
+const passwords = require('../utils/password');
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const HASH_BYTES = 64;
-
-async function hashPassword(password) {
-  const salt = crypto.randomBytes(16).toString('hex');
-  const key = await scrypt(password, salt, HASH_BYTES);
-  return 'scrypt$' + salt + '$' + Buffer.from(key).toString('hex');
-}
-
-async function verifyPassword(password, storedHash) {
-  const pieces = String(storedHash || '').split('$');
-  if (pieces.length !== 3 || pieces[0] !== 'scrypt' ||
-      !/^[a-f0-9]{32}$/.test(pieces[1]) ||
-      !/^[a-f0-9]{128}$/.test(pieces[2])) {
-    return false;
-  }
-
-  const actual = Buffer.from(await scrypt(password, pieces[1], HASH_BYTES));
-  const expected = Buffer.from(pieces[2], 'hex');
-  return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
-}
 
 function setLoginCookie(res, userId) {
   res.setHeader('Set-Cookie', userAuth.cookieHeader(
@@ -51,7 +28,7 @@ async function register(req, res, next) {
   }
 
   try {
-    const passwordHash = await hashPassword(password);
+    const passwordHash = await passwords.hashPassword(password);
     const [result] = await db.query(
       'INSERT INTO pengguna (nama, email, password_hash) VALUES (?, ?, ?)',
       [nama, email, passwordHash]
@@ -84,7 +61,7 @@ async function login(req, res, next) {
       [email]
     );
     const user = rows[0];
-    if (!user || !(await verifyPassword(password, user.password_hash))) {
+    if (!user || !(await passwords.verifyPassword(password, user.password_hash))) {
       return res.status(401).json({ message: 'Email atau password belum sesuai.' });
     }
 

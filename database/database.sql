@@ -35,6 +35,26 @@ CREATE TABLE IF NOT EXISTS pengguna (
   UNIQUE KEY uq_pengguna_email (email)
 );
 
+CREATE TABLE IF NOT EXISTS permintaan_layanan (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id INT UNSIGNED NULL,
+  layanan_id INT UNSIGNED NULL,
+  nama_pengguna VARCHAR(100) NOT NULL,
+  email_pengguna VARCHAR(150) NOT NULL,
+  nama_layanan VARCHAR(100) NOT NULL,
+  catatan VARCHAR(500) NULL,
+  status ENUM('menunggu', 'diverifikasi', 'ditolak') NOT NULL DEFAULT 'menunggu',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_permintaan_user (user_id),
+  KEY idx_permintaan_status (status),
+  CONSTRAINT fk_permintaan_pengguna FOREIGN KEY (user_id)
+    REFERENCES pengguna (id) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT fk_permintaan_layanan FOREIGN KEY (layanan_id)
+    REFERENCES layanan (id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
 INSERT INTO layanan (nama, kategori, deskripsi)
 SELECT 'Website untuk Bisnis', 'Digital', 'Website profil bisnis yang cepat, mudah digunakan, dan nyaman dibuka lewat ponsel maupun laptop.'
 WHERE NOT EXISTS (SELECT 1 FROM layanan WHERE nama = 'Website untuk Bisnis');

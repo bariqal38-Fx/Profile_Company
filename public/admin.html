@@ -18,6 +18,8 @@
       <a class="admin-brand" href="/" aria-label="Kembali ke website"><span class="admin-brand-mark">n.</span><span>NUSA<span>/DIGITAL</span></span></a>
       <div class="rail-label mono">WORKSPACE</div>
       <a class="rail-link is-active" href="#layanan-admin"><span>↗</span> Layanan</a>
+      <a class="rail-link" href="#permintaan-admin"><span>✓</span> Permintaan layanan</a>
+      <a class="rail-link" href="#pengguna-admin"><span>◎</span> Pengguna</a>
       <a class="rail-link" href="#pesan-admin"><span>✉</span> Pesan masuk</a>
       <div class="rail-bottom"><span class="rail-dot"></span><span>ADMIN MODE</span></div>
     </aside>
@@ -47,6 +49,8 @@
         </div>
         <div class="stats-row">
           <article class="stat-card"><span class="mono">LAYANAN AKTIF</span><b id="service-count">0</b><small>Tampil di website</small></article>
+          <article class="stat-card"><span class="mono">MENUNGGU VERIFIKASI</span><b id="request-count">0</b><small>Permintaan layanan baru</small></article>
+          <article class="stat-card"><span class="mono">PENGGUNA</span><b id="user-count">0</b><small>Akun terdaftar</small></article>
           <article class="stat-card"><span class="mono">PESAN MASUK</span><b id="message-count">0</b><small>Disimpan di database</small></article>
           <article class="stat-card stat-card-dark"><span class="mono">STATUS DATABASE</span><b id="db-status">Memeriksa…</b><small>MySQL · data permanen</small></article>
         </div>
@@ -66,8 +70,29 @@
           </div>
         </section>
 
+        <section class="admin-panel" id="permintaan-admin">
+          <div class="panel-heading"><div><p class="mono form-kicker">VERIFIKASI / 02</p><h2>Permintaan layanan</h2></div><button class="refresh-button" id="refresh-requests" type="button">Muat ulang ↻</button></div>
+          <div class="request-list" id="request-list" aria-live="polite"><p class="empty-state">Memuat permintaan layanan…</p></div>
+        </section>
+
+        <section class="admin-panel" id="pengguna-admin">
+          <div class="panel-heading"><div><p class="mono form-kicker">AKUN / 03</p><h2>Kelola pengguna</h2></div><span class="panel-count" id="user-label-count">0 pengguna</span></div>
+          <div class="user-admin-layout">
+            <form id="user-form" class="service-form user-form">
+              <div class="form-title-row"><h3 id="user-form-title">Tambah pengguna</h3><button class="cancel-edit" id="cancel-user-edit" type="button" hidden>Batal</button></div>
+              <label for="user-name">Nama lengkap</label><input id="user-name" name="nama" minlength="2" maxlength="100" required placeholder="Nama pengguna">
+              <label for="user-email">Email</label><input id="user-email" name="email" type="email" maxlength="150" required placeholder="nama@email.com">
+              <label for="user-password">Password sementara</label><input id="user-password" name="password" type="password" minlength="8" maxlength="100" autocomplete="new-password" placeholder="Minimal 8 karakter">
+              <small class="password-note" id="user-password-note">Wajib diisi saat menambah akun.</small>
+              <p class="admin-status" id="user-status" aria-live="polite"></p>
+              <button class="admin-button" type="submit" id="user-submit">Tambah pengguna <span aria-hidden="true">→</span></button>
+            </form>
+            <div class="user-list" id="user-list" aria-live="polite"><p class="empty-state">Memuat pengguna…</p></div>
+          </div>
+        </section>
+
         <section class="admin-panel messages-panel" id="pesan-admin">
-          <div class="panel-heading"><div><p class="mono form-kicker">INBOX / 02</p><h2>Pesan pengunjung</h2></div><button class="refresh-button" id="refresh-messages" type="button">Muat ulang ↻</button></div>
+          <div class="panel-heading"><div><p class="mono form-kicker">INBOX / 04</p><h2>Pesan pengunjung</h2></div><button class="refresh-button" id="refresh-messages" type="button">Muat ulang ↻</button></div>
           <div class="message-list" id="message-list" aria-live="polite"><p class="empty-state">Memuat pesan…</p></div>
         </section>
         <footer class="admin-footer"><span>Profil simulasi untuk proyek workshop.</span><a href="/">← Kembali ke website</a></footer>

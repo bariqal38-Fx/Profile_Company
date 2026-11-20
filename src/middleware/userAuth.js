@@ -1,4 +1,5 @@
 const crypto = require('node:crypto');
+const db = require('../config/db');
 
 const COOKIE_NAME = 'nusa_user';
 const SESSION_SECONDS = 7 * 24 * 60 * 60;
@@ -66,22 +67,41 @@ function cookieHeader(value, maxAge) {
     '; HttpOnly; SameSite=Lax; Path=/; Max-Age=' + maxAge + secure;
 }
 
-function requireUser(req, res, next) {
+async function requireUser(req, res, next) {
   const user = verifyToken(readToken(req));
   if (!user) {
     return res.status(401).json({ message: 'Silakan login terlebih dahulu.' });
   }
-  req.user = user;
-  next();
+
+  try {
+    const [rows] = await db.query('SELECT id FROM pengguna WHERE id = ? LIMIT 1', [user.id]);
+    if (!rows.length) {
+      return res.status(401).json({ message: 'Akun tidak ditemukan. Silakan masuk lagi.' });
+    }
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error);
+  }
 }
 
-function requireUserPage(req, res, next) {
+async function requireUserPage(req, res, next) {
   const user = verifyToken(readToken(req));
   if (!user) {
     return res.redirect('/akun.html?next=%2F');
   }
-  req.user = user;
-  next();
+
+  try {
+    const [rows] = await db.query('SELECT id FROM pengguna WHERE id = ? LIMIT 1', [user.id]);
+    if (!rows.length) {
+      res.setHeader('Set-Cookie', cookieHeader('', 0));
+      return res.redirect('/akun.html?next=%2F');
+    }
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error);
+  }
 }
 
 module.exports = {
